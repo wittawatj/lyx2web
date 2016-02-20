@@ -14,7 +14,7 @@ if you use a static site generator (e.g., Pelican, Jekyll).
 The Latex preamble is copied from the input Lyx (or .tex) file.
 
 For [Pelican](http://blog.getpelican.com/) setup that can directly support the
-markdown output from this tool, see [the source cdoe of my
+markdown output from this tool, see [the source code of my
 blog](https://github.com/wittawatj/pelican_blog) for example.
 
 ## Software dependency 
@@ -26,7 +26,7 @@ Require
 * Python 2.x. 
 * `lyx` (used for converting the input Lyx file into .tex)
 * `pandoc` (used for converting to markdown) 
-* `iconv` (used for converting the tex source file in to UTF8 encoding)
+* `iconv` (used for converting the tex source file to UTF8 encoding)
 
 ## Usage 
 
@@ -81,7 +81,7 @@ the generated file name.
 
 If `\postmeta{..}` is unspecified, the text specified in
 `\section{...}` will be used as the slug (after normalizing and removing unsuitable
-characters). Today's date will be used for the date. Tags will be set to empty.
+characters), today's date will be used for the date, and tags will be set to empty.
 
 ## Limitations
 
