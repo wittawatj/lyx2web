@@ -145,10 +145,10 @@ def main(src_fpath, dest_dir, cleanup=False):
     list_posts = parse_joint_latex(utf_content)
     for i, ti_content  in enumerate(list_posts):
         title, tex_content = ti_content
-        print 'Processing post %d: %s'%(i, title)
+        print 'Processing post %d: %s'%(i+1, title)
         # make a .tex file for each post 
-        post_tex = preamble + '\n \\begin{document}\n' + tex_content + \
-            '\n \end{document}\n'
+        post_tex = preamble + '\n \\begin{document}\n' + '\\section{'+title+'}\n\n' \
+            + tex_content + '\n \end{document}\n'
         # locate \postmeta section 
         raw_postmeta = extract_post_meta(post_tex)
         if raw_postmeta is None:
