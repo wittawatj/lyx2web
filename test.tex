@@ -1,0 +1,189 @@
+%% LyX 2.1.4 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[a4paper,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage[authoryear]{natbib}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\pdfpageheight\paperheight
+\pdfpagewidth\paperwidth
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{geometry}
+
+%\usepackage{index}
+%\usepackage{mdwlist}
+\usepackage{natbib}
+%\usepackage{microtype}
+\usepackage{soul}
+
+\usepackage{url}
+
+
+\newcommand{\diag}{\mathop{\mathrm{diag}}}
+\newcommand{\trace}{\mathop{\mathrm{tr}}}
+\newcommand{\median}{\mathop{\mathrm{median}}}
+
+\let\oldenumerate=\enumerate
+\def\enumerate{
+\oldenumerate
+\setlength{\itemsep}{0pt}
+}
+\let\olditemize=\itemize
+\def\itemize{
+\olditemize
+\setlength{\itemsep}{0pt}
+}
+
+\newcommand{\postmeta}[1]{}
+
+\makeatother
+
+\begin{document}
+
+\title{ML/Math/Stats Summary}
+
+
+\author{Wittawat Jitkrittum}
+
+\maketitle
+\tableofcontents{}
+
+
+\section{Probability $p(\|x\|_{2}<R)$ where $x\sim\mathcal{N}(0,\Sigma)$
+and $x\in\mathbb{R}^{D}$}
+
+\postmeta{
+Title: Probability $p(\|x\|_{2}<R)$ where $x\sim\mathcal{N}(0,\Sigma)$  and $x\in\mathbb{R}^{D}$
+Date: 2014-06-29 
+Tags: probability, statistics
+Slug: prob_gaussian_ball
+}
+
+A friend of mine recently asked ``What is the value of $p(\|x\|_{2}<R)$
+where $x\sim\mathcal{N}(0,\Sigma)$ and $x\in\mathbb{R}^{D}$?''
+The question is not as easy as it looks. Although I did not get the
+answer, I arrived at some expression which is close to the goal. Before
+I show what I did, here is one result we will need.
+\begin{itemize}
+\item If $z^{2}\sim\chi^{2}(D)$ and $v$ is a positive constant, then $vz^{2}\sim\mathrm{Gamma}(\frac{D}{2},2v)$
+(shape-scale parameterization). 
+\end{itemize}
+Here is what I did. Eigen-decompose $\Sigma=UVU^{\top}$. Note that
+$p(\|x\|_{2}<R)=p(x^{\top}x<R^{2})$. The goal here is to find the
+CDF of $x^{\top}x$. Let $y:=U^{\top}x$. It follows that $x^{\top}x=y^{\top}y=\sum_{i=1}^{D}y_{i}^{2}$
+because $U$ is an orthogonal matrix. So, $p(x^{\top}x<R^{2})=p(y^{\top}y<R^{2})$
+. From the property of the normal distribution, we know that $y=U^{\top}x\sim\mathcal{N}(0,V)$.
+Equivalently, $y_{i}\sim\mathcal{N}(0,v_{i})$ where $v_{i}:=V_{ii}$.
+Let $z\sim\mathcal{N}(0,1)$ be the standard normal random variable.
+We can rewrite $y_{i}$ as $y_{i}=\sqrt{v_{i}}z$, and so $y_{i}^{2}=v_{i}z^{2}$,
+where $z^{2}\sim\chi^{2}(1)$, the Chi-squared distribution with one
+degree of freedom. From the previous result, we have $y_{i}^{2}\sim\mathrm{Gamma}(\frac{1}{2},2v_{i})$.
+This implies that the CDF of $y^{\top}y$ is the same as the CDF of
+a sum of independent Gamma random variables. According to \href{https://projecteuclid.org/euclid.ejs/1403812157}{Covo and Elalouf, 2014}
+and \href{https://www.researchgate.net/publication/225242960_The_Distribution_of_the_Sum_of_Independent_Gamma_Random_Variables}{Moschopoulos, 1985},
+the CDF is not trivial to compute. 
+
+
+\section{Learning the parameters of determinantal point process kernels \citep{Affandi2014}}
+
+22 June 2015. A determinantal point process (DPP) is a probability
+measure on the $2^{N}$ possible subsets $A$ of a discrete set $\Omega=\{x_{1},\ldots,x_{N}\}$:
+\[
+P_{L}(A)=\frac{\det(L_{A})}{\det(L+I)}
+\]
+where $L_{A}$ is a submatrix of the $N\times N$ matrix $L$ indexed
+by the members in the set $A$. Given a set of $T$ samples $S=\{A^{1},\ldots,A^{T}\}$,
+the parameters $\theta$ of the kernel $L$ can be learned by performing
+a gradient ascent on the log likelihood $\mathcal{L}(\theta)$:
+\[
+\mathcal{L}(\theta)=\sum_{t=1}^{T}\log\det(L_{A^{t}})-T\log\det(L(\theta)+I).
+\]
+When $N$ is large, however, computing the likelihood or the derivative
+is inefficient. A Bayesian learning of DPPs relies on sampling techniqes
+such as Metropolis-Hastings (MG) and slice sampling. In MH, we use
+a proposal distribution $f(\hat{\theta}|\theta_{i})$ to generate
+a candidate $\hat{\theta}$ given the current parameters $\theta_{i}$
+which are then accepted or rejected with probability $\min(1,r)$
+where 
+\[
+r=\left(\frac{p\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right).
+\]
+Notice that the normalizer $\det(L+I)$ depends on $\theta$ and does
+not cancel out in the ratio in $r$. In fact, evaluation of the normalizer\footnote{Here we consider $\Omega$ to be an uncountable set; hence, the operator
+$L$ has infinitely many eigenvalues.} $\det(L(\theta)+I)=\prod_{n=1}^{\infty}(\lambda_{n}(\theta)+1)$
+is difficult. The main idea of \citet{Affandi2014} is to use lower
+and upper bounds of $p(\hat{\theta}|S)$ in place of $p(\hat{\theta}|S)$
+in the MH acceptance ratio. 
+\begin{align*}
+\text{lower bound: }\prod_{n=1}^{M}(1+\lambda_{n}) & \leq\prod_{n=1}^{\infty}(1+\lambda_{n}),\\
+\text{upper bound: }\prod_{n=1}^{\infty}(1+\lambda_{n}) & \leq\exp\left\{ \trace(L)-\sum_{n=1}^{M}\lambda_{n}\right\} \left[\prod_{n=1}^{M}(1+\lambda_{n})\right],
+\end{align*}
+where $\trace(L)$ can be computed as either $\sum_{i=1}^{N}L_{ii}$
+in the discrete case or $\int_{\Omega}L(x,x)\,\mathrm{d}x$ in the
+continuous case. In each MH step, two quantities $r^{+}$ and $r^{-}$
+are computed:
+\[
+r^{+}=\left(\frac{p^{+}\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p^{-}(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right),\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace r^{-}=\left(\frac{p^{-}\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p^{+}(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right).
+\]
+If $u<\min(1,r^{-1})$ where $u\sim\text{Uniform}[0,1]$, the immediately
+reject because it follows that $u<\min(1,r)$ as well. Similarly,
+if $u>\min(1,r^{+})$, immediately accept the proposal. If $u\in(r^{-},r^{+})$,
+then tighten the bounds until a decision can be made. This idea is
+also applicable to the slice sampling. 
+
+It is unclear if this scheme will work in the case that $q_{u}$ is
+high dimensional. 
+
+
+\section{Variational Holder bound}
+
+This post summarizes 
+
+\begin{verbatim}
+Approximate Inference with the Variational Holder Bound
+Guillaume Bouchard, Balaji Lakshminarayanan
+arXiv:1506.06100, 2015.
+\end{verbatim}
+
+\href{http://arxiv.org/abs/1506.06100}{The paper}proposes the variational
+Hölder bound as an alternative to the variational Bayes (VB) for approximante
+Bayesian inference. The idea is to construct an \emph{upper bound}
+(as opposed to a lower bound as in VB) to the marginal likelihood,
+and \emph{minimize} it with respect to an introduced pivot function
+$\Psi$. Let $x$ represent the observed samples and $z$ represent
+latent variables. The bound $\overline{I}_{\alpha}$ is constructed
+as
+\begin{align*}
+I^{*} & =\int p(z)p(x|z)\,\mathrm{d}z=p(x)\\
+ & =\int p(z)\Psi p(x|z)/\Psi\,\mathrm{d}z\\
+\text{(Hölder's inequality)} & \leq\left(\int\left(p(z)\Psi\right)^{\alpha_{1}}\,\mathrm{d}z\right)^{1/\alpha_{1}}\left(\int\left(p(x|z)/\Psi\right)^{\alpha_{2}}\,\mathrm{d}z\right)^{1/\alpha_{2}}\\
+ & :=\overline{I}_{\alpha}
+\end{align*}
+where $\frac{1}{\alpha_{1}}+\frac{1}{\alpha_{2}}=1$. With an optimized
+$\Psi$, it turns out that $p(z|x)$ can be approximated well with
+either $\frac{p(z)\Psi}{\int(p(z)\Psi)^{\alpha_{1}}\,\mathrm{d}z}$
+or $\frac{p(x|z)/\Psi}{\int(p(x|z)/\Psi)^{\alpha_{2}}\,\mathrm{d}z}$
+depending on the chosen value of $\alpha_{1}$.
+
+\bibliographystyle{plainnat}
+\bibliography{ml_learn}
+
+\end{document}

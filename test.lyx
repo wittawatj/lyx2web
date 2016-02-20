@@ -1,0 +1,724 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{geometry}
+
+%\usepackage{index}
+%\usepackage{mdwlist}
+\usepackage{natbib}
+%\usepackage{microtype}
+\usepackage{soul}
+
+\usepackage{url}
+
+
+\newcommand{\diag}{\mathop{\mathrm{diag}}}
+\newcommand{\trace}{\mathop{\mathrm{tr}}}
+\newcommand{\median}{\mathop{\mathrm{median}}}
+
+\let\oldenumerate=\enumerate
+\def\enumerate{
+\oldenumerate
+\setlength{\itemsep}{0pt}
+}
+\let\olditemize=\itemize
+\def\itemize{
+\olditemize
+\setlength{\itemsep}{0pt}
+}
+
+\newcommand{\postmeta}[1]{}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-ams-bytype
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ML/Math/Stats Summary
+\end_layout
+
+\begin_layout Author
+Wittawat Jitkrittum
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Probability 
+\begin_inset Formula $p(\|x\|_{2}<R)$
+\end_inset
+
+ where 
+\begin_inset Formula $x\sim\mathcal{N}(0,\Sigma)$
+\end_inset
+
+ and 
+\begin_inset Formula $x\in\mathbb{R}^{D}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+postmeta{
+\end_layout
+
+\begin_layout Plain Layout
+
+Title: Probability $p(
+\backslash
+|x
+\backslash
+|_{2}<R)$ where $x
+\backslash
+sim
+\backslash
+mathcal{N}(0,
+\backslash
+Sigma)$  and $x
+\backslash
+in
+\backslash
+mathbb{R}^{D}$
+\end_layout
+
+\begin_layout Plain Layout
+
+Date: 2014-06-29 
+\end_layout
+
+\begin_layout Plain Layout
+
+Tags: probability, statistics
+\end_layout
+
+\begin_layout Plain Layout
+
+Slug: prob_gaussian_ball
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A friend of mine recently asked 
+\begin_inset Quotes eld
+\end_inset
+
+What is the value of 
+\begin_inset Formula $p(\|x\|_{2}<R)$
+\end_inset
+
+ where 
+\begin_inset Formula $x\sim\mathcal{N}(0,\Sigma)$
+\end_inset
+
+ and 
+\begin_inset Formula $x\in\mathbb{R}^{D}$
+\end_inset
+
+?
+\begin_inset Quotes erd
+\end_inset
+
+ The question is not as easy as it looks.
+ Although I did not get the answer, I arrived at some expression which is
+ close to the goal.
+ Before I show what I did, here is one result we will need.
+\end_layout
+
+\begin_layout Itemize
+If 
+\begin_inset Formula $z^{2}\sim\chi^{2}(D)$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ is a positive constant, then 
+\begin_inset Formula $vz^{2}\sim\mathrm{Gamma}(\frac{D}{2},2v)$
+\end_inset
+
+ (shape-scale parameterization).
+ 
+\end_layout
+
+\begin_layout Standard
+Here is what I did.
+ Eigen-decompose 
+\begin_inset Formula $\Sigma=UVU^{\top}$
+\end_inset
+
+.
+ Note that 
+\begin_inset Formula $p(\|x\|_{2}<R)=p(x^{\top}x<R^{2})$
+\end_inset
+
+.
+ The goal here is to find the CDF of 
+\begin_inset Formula $x^{\top}x$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $y:=U^{\top}x$
+\end_inset
+
+.
+ It follows that 
+\begin_inset Formula $x^{\top}x=y^{\top}y=\sum_{i=1}^{D}y_{i}^{2}$
+\end_inset
+
+ because 
+\begin_inset Formula $U$
+\end_inset
+
+ is an orthogonal matrix.
+ So, 
+\begin_inset Formula $p(x^{\top}x<R^{2})=p(y^{\top}y<R^{2})$
+\end_inset
+
+ .
+ From the property of the normal distribution, we know that 
+\begin_inset Formula $y=U^{\top}x\sim\mathcal{N}(0,V)$
+\end_inset
+
+.
+ Equivalently, 
+\begin_inset Formula $y_{i}\sim\mathcal{N}(0,v_{i})$
+\end_inset
+
+ where 
+\begin_inset Formula $v_{i}:=V_{ii}$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $z\sim\mathcal{N}(0,1)$
+\end_inset
+
+ be the standard normal random variable.
+ We can rewrite 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ as 
+\begin_inset Formula $y_{i}=\sqrt{v_{i}}z$
+\end_inset
+
+, and so 
+\begin_inset Formula $y_{i}^{2}=v_{i}z^{2}$
+\end_inset
+
+, where 
+\begin_inset Formula $z^{2}\sim\chi^{2}(1)$
+\end_inset
+
+, the Chi-squared distribution with one degree of freedom.
+ From the previous result, we have 
+\begin_inset Formula $y_{i}^{2}\sim\mathrm{Gamma}(\frac{1}{2},2v_{i})$
+\end_inset
+
+.
+ This implies that the CDF of 
+\begin_inset Formula $y^{\top}y$
+\end_inset
+
+ is the same as the CDF of a sum of independent Gamma random variables.
+ According to 
+\begin_inset CommandInset href
+LatexCommand href
+name "Covo and Elalouf, 2014"
+target "https://projecteuclid.org/euclid.ejs/1403812157"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset href
+LatexCommand href
+name "Moschopoulos, 1985"
+target "https://www.researchgate.net/publication/225242960_The_Distribution_of_the_Sum_of_Independent_Gamma_Random_Variables"
+
+\end_inset
+
+, the CDF is not trivial to compute.
+ 
+\end_layout
+
+\begin_layout Section
+Learning the parameters of determinantal point process kernels 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Affandi2014"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+22 June 2015.
+ A determinantal point process (DPP) is a probability measure on the 
+\begin_inset Formula $2^{N}$
+\end_inset
+
+ possible subsets 
+\begin_inset Formula $A$
+\end_inset
+
+ of a discrete set 
+\begin_inset Formula $\Omega=\{x_{1},\ldots,x_{N}\}$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+P_{L}(A)=\frac{\det(L_{A})}{\det(L+I)}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $L_{A}$
+\end_inset
+
+ is a submatrix of the 
+\begin_inset Formula $N\times N$
+\end_inset
+
+ matrix 
+\begin_inset Formula $L$
+\end_inset
+
+ indexed by the members in the set 
+\begin_inset Formula $A$
+\end_inset
+
+.
+ Given a set of 
+\begin_inset Formula $T$
+\end_inset
+
+ samples 
+\begin_inset Formula $S=\{A^{1},\ldots,A^{T}\}$
+\end_inset
+
+, the parameters 
+\begin_inset Formula $\theta$
+\end_inset
+
+ of the kernel 
+\begin_inset Formula $L$
+\end_inset
+
+ can be learned by performing a gradient ascent on the log likelihood 
+\begin_inset Formula $\mathcal{L}(\theta)$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\mathcal{L}(\theta)=\sum_{t=1}^{T}\log\det(L_{A^{t}})-T\log\det(L(\theta)+I).
+\]
+
+\end_inset
+
+When 
+\begin_inset Formula $N$
+\end_inset
+
+ is large, however, computing the likelihood or the derivative is inefficient.
+ A Bayesian learning of DPPs relies on sampling techniqes such as Metropolis-Has
+tings (MG) and slice sampling.
+ In MH, we use a proposal distribution 
+\begin_inset Formula $f(\hat{\theta}|\theta_{i})$
+\end_inset
+
+ to generate a candidate 
+\begin_inset Formula $\hat{\theta}$
+\end_inset
+
+ given the current parameters 
+\begin_inset Formula $\theta_{i}$
+\end_inset
+
+ which are then accepted or rejected with probability 
+\begin_inset Formula $\min(1,r)$
+\end_inset
+
+ where 
+\begin_inset Formula 
+\[
+r=\left(\frac{p\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right).
+\]
+
+\end_inset
+
+Notice that the normalizer 
+\begin_inset Formula $\det(L+I)$
+\end_inset
+
+ depends on 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and does not cancel out in the ratio in 
+\begin_inset Formula $r$
+\end_inset
+
+.
+ In fact, evaluation of the normalizer
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Here we consider 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ to be an uncountable set; hence, the operator 
+\begin_inset Formula $L$
+\end_inset
+
+ has infinitely many eigenvalues.
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $\det(L(\theta)+I)=\prod_{n=1}^{\infty}(\lambda_{n}(\theta)+1)$
+\end_inset
+
+ is difficult.
+ The main idea of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Affandi2014"
+
+\end_inset
+
+ is to use lower and upper bounds of 
+\begin_inset Formula $p(\hat{\theta}|S)$
+\end_inset
+
+ in place of 
+\begin_inset Formula $p(\hat{\theta}|S)$
+\end_inset
+
+ in the MH acceptance ratio.
+ 
+\begin_inset Formula 
+\begin{align*}
+\text{lower bound: }\prod_{n=1}^{M}(1+\lambda_{n}) & \leq\prod_{n=1}^{\infty}(1+\lambda_{n}),\\
+\text{upper bound: }\prod_{n=1}^{\infty}(1+\lambda_{n}) & \leq\exp\left\{ \trace(L)-\sum_{n=1}^{M}\lambda_{n}\right\} \left[\prod_{n=1}^{M}(1+\lambda_{n})\right],
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\trace(L)$
+\end_inset
+
+ can be computed as either 
+\begin_inset Formula $\sum_{i=1}^{N}L_{ii}$
+\end_inset
+
+ in the discrete case or 
+\begin_inset Formula $\int_{\Omega}L(x,x)\,\mathrm{d}x$
+\end_inset
+
+ in the continuous case.
+ In each MH step, two quantities 
+\begin_inset Formula $r^{+}$
+\end_inset
+
+ and 
+\begin_inset Formula $r^{-}$
+\end_inset
+
+ are computed:
+\begin_inset Formula 
+\[
+r^{+}=\left(\frac{p^{+}\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p^{-}(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right),\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace\thinspace r^{-}=\left(\frac{p^{-}\left(\hat{\theta}|S\right)f(\theta_{i}|\hat{\theta})}{p^{+}(\theta_{i}|S)f(\hat{\theta}|\theta_{i})}\right).
+\]
+
+\end_inset
+
+If 
+\begin_inset Formula $u<\min(1,r^{-1})$
+\end_inset
+
+ where 
+\begin_inset Formula $u\sim\text{Uniform}[0,1]$
+\end_inset
+
+, the immediately reject because it follows that 
+\begin_inset Formula $u<\min(1,r)$
+\end_inset
+
+ as well.
+ Similarly, if 
+\begin_inset Formula $u>\min(1,r^{+})$
+\end_inset
+
+, immediately accept the proposal.
+ If 
+\begin_inset Formula $u\in(r^{-},r^{+})$
+\end_inset
+
+, then tighten the bounds until a decision can be made.
+ This idea is also applicable to the slice sampling.
+ 
+\end_layout
+
+\begin_layout Standard
+It is unclear if this scheme will work in the case that 
+\begin_inset Formula $q_{u}$
+\end_inset
+
+ is high dimensional.
+ 
+\end_layout
+
+\begin_layout Section
+Variational Holder bound
+\end_layout
+
+\begin_layout Standard
+This post summarizes 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{verbatim}
+\end_layout
+
+\begin_layout Plain Layout
+
+Approximate Inference with the Variational Holder Bound
+\end_layout
+
+\begin_layout Plain Layout
+
+Guillaume Bouchard, Balaji Lakshminarayanan
+\end_layout
+
+\begin_layout Plain Layout
+
+arXiv:1506.06100, 2015.
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{verbatim}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "The paper"
+target "http://arxiv.org/abs/1506.06100"
+
+\end_inset
+
+proposes the variational Hölder bound as an alternative to the variational
+ Bayes (VB) for approximante Bayesian inference.
+ The idea is to construct an 
+\emph on
+upper bound
+\emph default
+ (as opposed to a lower bound as in VB) to the marginal likelihood, and
+ 
+\emph on
+minimize
+\emph default
+ it with respect to an introduced pivot function 
+\begin_inset Formula $\Psi$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $x$
+\end_inset
+
+ represent the observed samples and 
+\begin_inset Formula $z$
+\end_inset
+
+ represent latent variables.
+ The bound 
+\begin_inset Formula $\overline{I}_{\alpha}$
+\end_inset
+
+ is constructed as
+\begin_inset Formula 
+\begin{align*}
+I^{*} & =\int p(z)p(x|z)\,\mathrm{d}z=p(x)\\
+ & =\int p(z)\Psi p(x|z)/\Psi\,\mathrm{d}z\\
+\text{(Hölder's inequality)} & \leq\left(\int\left(p(z)\Psi\right)^{\alpha_{1}}\,\mathrm{d}z\right)^{1/\alpha_{1}}\left(\int\left(p(x|z)/\Psi\right)^{\alpha_{2}}\,\mathrm{d}z\right)^{1/\alpha_{2}}\\
+ & :=\overline{I}_{\alpha}
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\frac{1}{\alpha_{1}}+\frac{1}{\alpha_{2}}=1$
+\end_inset
+
+.
+ With an optimized 
+\begin_inset Formula $\Psi$
+\end_inset
+
+, it turns out that 
+\begin_inset Formula $p(z|x)$
+\end_inset
+
+ can be approximated well with either 
+\begin_inset Formula $\frac{p(z)\Psi}{\int(p(z)\Psi)^{\alpha_{1}}\,\mathrm{d}z}$
+\end_inset
+
+ or 
+\begin_inset Formula $\frac{p(x|z)/\Psi}{\int(p(x|z)/\Psi)^{\alpha_{2}}\,\mathrm{d}z}$
+\end_inset
+
+ depending on the chosen value of 
+\begin_inset Formula $\alpha_{1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "ml_learn"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
