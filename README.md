@@ -1,7 +1,7 @@
 # lyx2web
 
 `lyx2web` is a standalone Python script to convert a
-[Lyx](https://www.lyx.org/) or a .tex document into a set of blog posts. This
+[Lyx](https://www.lyx.org/) or a .tex document to a set of blog posts. This
 little tool is suitable if you maintain notes in one Lyx document and want to
 publish them as blog posts. 
 
@@ -13,10 +13,13 @@ if you use a static site generator (e.g., Pelican, Jekyll).
 * The generated .tex file from each section is compilable with `pdflatex`.
 The Latex preamble is copied from the input Lyx (or .tex) file.
 
+For [Pelican](http://blog.getpelican.com/) setup that can directly support the
+markdown output from this tool, see [the source cdoe of my
+blog](https://github.com/wittawatj/pelican_blog) for example.
 
 ## Software dependency 
 
-The tool is tested on Ubuntu 14.04 with Python 2.7.11. 
+The tool is loosely tested on Ubuntu 14.04 with Python 2.7.11. 
 
 Require
 
@@ -50,8 +53,7 @@ each section.
 ### Post metadata
 
 Many static site generators require each post to have metadata at the beginning 
-of its markdown file. For example, in [Pelican](http://blog.getpelican.com/), the 
-metadata look like 
+of its markdown file. For example, in Pelican, the metadata look like 
 
 
     Title: some title here
@@ -63,7 +65,7 @@ To specify this, first define a new command `\postmeta` in the Latex preamble wi
 
     \newcommand{\postmeta}[1]{}
 
-At the beginning of each section, write the following 
+At the beginning of each section, write 
 
     \postmeta{
     Title: some title here
@@ -75,11 +77,15 @@ At the beginning of each section, write the following
 This metadata will not show up in the compiled pdf as the command `\postmeta` is 
 defined to do nothing. The only purpose is so that the tool can copy to the
 beginning of the generated markdown file. The value of `Slug` will be used as
-the generated file name. If unspecified, the text specified in
-`\section{...}` will be used (after normalizing and removing unsuitable
-characters).
+the generated file name. 
+
+If `\postmeta{..}` is unspecified, the text specified in
+`\section{...}` will be used as the slug (after normalizing and removing unsuitable
+characters). Today's date will be used for the date. Tags will be set to empty.
 
 ## Limitations
+
+This tool is written in a few hours and obviously nowhere near complete. 
 
 Not supported (yet)
 
