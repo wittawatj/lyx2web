@@ -74,7 +74,7 @@ def normalize_file_name(fname):
     to be used as a file name.
     """
     t = fname 
-    t = re.sub('[^0-9A-Fa-f_-]+', '_', t )
+    t = re.sub('[^0-9A-Za-z_-]', '_', t )
     t = re.sub('_+', '_', t)
     return t
 
@@ -145,14 +145,15 @@ def main(src_fpath, dest_dir, cleanup=False):
     list_posts = parse_joint_latex(utf_content)
     for i, ti_content  in enumerate(list_posts):
         title, tex_content = ti_content
+        print 'Processing post %d: %s'%(i, title)
         # make a .tex file for each post 
-        post_tex = preamble + '\n \begin{document}\n' + tex_content + \
+        post_tex = preamble + '\n \\begin{document}\n' + tex_content + \
             '\n \end{document}\n'
         # locate \postmeta section 
         raw_postmeta = extract_post_meta(post_tex)
         if raw_postmeta is None:
             # postmeta not found. Make a new one. 
-            slug = normalize_file_name(title)
+            slug = normalize_file_name(title).lower()
             meta_str = 'Title: %s\n Date: %s\n Tags: \n Slug: %s'\
                 %(title, today_date(), slug)
         else:
@@ -164,8 +165,13 @@ def main(src_fpath, dest_dir, cleanup=False):
         posti_fpath = os.path.join(dest_dir, slug+'.tex')
         str2file(post_tex, posti_fpath)
         # convert to markdown with pandoc
-        run_shell_cmd('pandoc -s %s -o %s'%(posti_fpath, slug+'.md'))
-    
+        posti_md_fpath = os.path.join(dest_dir, slug+'.md')
+        run_shell_cmd('pandoc -s %s -o %s'%(posti_fpath, posti_md_fpath))
+
+        # add the post meta data to the markdown file 
+        md_content = file2str(posti_md_fpath)
+        md_content = meta_str + '\n\n' + md_content
+        str2file(md_content, posti_md_fpath)
 
     # clean up intermediate files
 
