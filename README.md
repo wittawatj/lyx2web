@@ -8,7 +8,9 @@ publish them as blog posts.
 * For each section (`\section` in Latex), the tool will write two files: a
   [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 (.md) and a Latex file. The markdown file is suitable for publishing on the web
-if you use a static site generator (e.g., Pelican, Jekyll). 
+if you use a static site generator (e.g., Pelican, Jekyll). If your static site
+generator is setup properly, the equation outputs in the markdown file can be
+rendered directly with [MathJax](https://www.mathjax.org/).
 
 * The generated .tex file from each section is compilable with `pdflatex`.
 The Latex preamble is copied from the input Lyx (or .tex) file.
